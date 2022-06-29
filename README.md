@@ -34,7 +34,7 @@ Instructions to be added in a future update
 
 ## License
 
-InaraNet is currently licensed under the [GNU GPLv3](https://github.com/inaralalani/inn-lstm-amp/LICENSE) license, which is subject to change.
+InaraNet is currently licensed under the [GNU GPLv3](https://github.com/inaralalani/inn-lstm-amp/blob/main/LICENSE) license, which is subject to change.
 
 Original work:
 
