@@ -29,8 +29,8 @@ from time import gmtime, strftime
 print("STARTING JOB: " + strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 
 from Bio import SeqIO
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import sequence
+from tensorflow.python.keras.models import load_model
+from tensorflow.python.keras.preprocessing import sequence
 import sys
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2' # turns off tensorflow SSE compile warnings
