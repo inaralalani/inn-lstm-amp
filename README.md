@@ -7,7 +7,7 @@ InaraNet is a combination Involutional Neural Network (INN) and Long Short-term 
 Obtain a copy of this repository:
 
 ```bash
-$ git clone [https://github.com/inaralalani/inn-lstm-amp](https://github.com/inaralalani/inn-lstm-amp)
+$ git clone https://github.com/inaralalani/inn-lstm-amp
 ```
 
 As this code uses the legacy Tensorflow 1.x, you will need to create a Python 3.7.x virtual environment. We recommend using Anaconda to manage environments and dependencies.
