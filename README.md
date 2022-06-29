@@ -22,7 +22,15 @@ $ pip install -r requirements.txt
 
 ## Usage
 
-Usage instructions will be added in a future update
+Inference:
+
+```bash
+$ python3 src/inference.py input/AMP.eval.fa models/amp_model_cnn.h5
+```
+
+Training:
+
+Instructions to be added in a future update
 
 ## License
 
