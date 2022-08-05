@@ -1,4 +1,4 @@
-import tensorflow.python.keras as keras
+import keras
 import tensorflow as tf
 
 class Involution1D(keras.layers.Layer):
@@ -16,7 +16,7 @@ class Involution1D(keras.layers.Layer):
 
     def build(self, input_shape):
         # Get the shape of the input.
-        (_, height, num_channels) = input_shape
+        (_, width, height, num_channels) = input_shape
 
         # Scale the height and width with respect to the strides.
         height = height // self.stride
@@ -82,7 +82,9 @@ class Involution1D(keras.layers.Layer):
         # B, H, W, K*K*C
         input_patches = tf.image.extract_patches(
             images=x,
+            # sizes=[1, self.kernel_size, self.kernel_size, 1],
             sizes=[1, self.kernel_size, self.kernel_size, 1],
+            # strides=[1, self.stride, self.stride, 1],
             strides=[1, self.stride, self.stride, 1],
             rates=[1, 1, 1, 1],
             padding="SAME",

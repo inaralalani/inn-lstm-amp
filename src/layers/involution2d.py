@@ -1,4 +1,4 @@
-import tensorflow.python.keras as keras
+import keras
 import tensorflow as tf
 
 class Involution2D(keras.layers.Layer):
@@ -13,6 +13,18 @@ class Involution2D(keras.layers.Layer):
         self.kernel_size = kernel_size
         self.stride = stride
         self.reduction_ratio = reduction_ratio
+
+    def get_config(self):
+
+        config = super().get_config().copy()
+        config.update({
+            'channel': self.channel,
+            'group_number': self.group_number,
+            'kernel_size': self.kernel_size,
+            'stride': self.stride,
+            'reduction_ratio': self.reduction_ratio,
+        })
+        return config
 
     def build(self, input_shape):
         # Get the shape of the input.
@@ -103,4 +115,4 @@ class Involution2D(keras.layers.Layer):
         output = self.output_reshape(output)
 
         # Return the output tensor and the kernel.
-        return output, kernel
+        return output #, kernel
