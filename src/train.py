@@ -120,24 +120,7 @@ def compile_model(channel=3, group_number=1, kernel_size=5, stride=1, reduction_
 
     return model
 
-
-model = compile_model()
-test_params = {
-    'kernel_size': [5, 6, 7, 8, 9, 10]
-}
-
-# if os.path.exists('models/weights/checkpoint'):
-#     model.load_weights('models/weights/temp.weights')
-# else:
-#     print("Training now...")
-#     model.fit(X_train, numpy.array(y_train), epochs=nepochs, batch_size=nbatch, verbose=1)
-#     model.save_weights('models/weights/temp.weights')
-
-# model.save(saved_model_name)
-tests = {}
-
-
-def test_model(model, param, value):
+def test_model(model, kernel_size, n_epochs, n_batch_size):
 
     print("\nGathering Testing Results...")
     preds = model.predict(X_test)
@@ -151,13 +134,51 @@ def test_model(model, param, value):
     spec = tn / (tn + fp + 0.0) * 100.0
     prec = tp / (tp + fp + 0.0) * 100.0
 
-    return {'0_param_value': value, 'tp': tp, 'tn': tn, 'fp': fp, 'fn': fn, 'sens': sens, 'spec': spec, 'acc': acc, 'mcc': mcc, 'auroc': roc, 'prec': prec}
+    return {'0_kernel_size': kernel_size, 
+            '0_n_epochs': n_epochs,
+            '0_n_batch_size': n_batch_size,
+            'tp': tp, 'tn': tn, 'fp': fp, 'fn': fn, 'sens': sens, 'spec': spec, 'acc': acc, 'mcc': mcc, 'auroc': roc, 'prec': prec}
+test_params = {
+    'kernel_size': list(range(5, 15)),
+    'n_epochs': list(range(10, 110, 10)),#, 2, 3, 4, 5],
+    'n_batch_size': [32] #list(range(32, 320, 32))#, 2, 3, 4, 5]
+}
+params = []
+for r in test_params['n_epochs']:
+    for k in test_params['kernel_size']:
+        for s in test_params['n_batch_size']:
+            params.append({'kernel_size': k, 'n_epochs': r, 'n_batch_size': s})
 
+
+tests = []
+for i, param in enumerate(params):
+    try:
+        print(param)
+        model = compile_model(kernel_size=param['kernel_size'])
+        model.fit(X_train, numpy.array(y_train), epochs=param['n_epochs'], batch_size=param['n_batch_size'], verbose=1)
+        tests.append(test_model(model, param['kernel_size'], param['n_epochs'], param['n_batch_size']))
+    except Exception:
+        print("Error on param set {}".format(i))
+        continue
+    except KeyboardInterrupt:
+        break
+    # if i == 1: break
+# if os.path.exists('models/weights/checkpoint'):
+#     model.load_weights('models/weights/temp.weights')
+# else:
+#     print("Training now...")
+#     model.fit(X_train, numpy.array(y_train), epochs=nepochs, batch_size=nbatch, verbose=1)
+#     model.save_weights('models/weights/temp.weights')
+
+# model.save(saved_model_name)
 
 # print("\nTP\tTN\tFP\tFN\tSens\tSpec\tAcc\tMCC\tauROC\tPrec")
 # print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(tp,tn,fp,fn,numpy.round(sens,4),numpy.round(spec,4),numpy.round(acc,4),numpy.round(mcc,4),numpy.round(roc,4),numpy.round(prec,4)))
 # print("\nSaved model as: {}".format(saved_model_name))
-test_model(model, 'stride', 1)
+# test_model(model, 'stride', 1)
 pprint(tests)
+import pandas as pd
+df = pd.DataFrame(tests)
+df.to_csv('tuning_results_2.csv')
 
 # END PROGRAM

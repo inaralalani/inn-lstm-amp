@@ -1,7 +1,6 @@
 absl-py==1.1.0
 astor==0.8.1
 biopython==1.79
-certifi @ file:///opt/conda/conda-bld/certifi_1655968806487/work/certifi
 cloudpickle==2.1.0
 decorator==5.1.1
 dm-tree==0.1.7
